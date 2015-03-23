@@ -19,8 +19,6 @@ public class CreateRecipeDisplay extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnSave = new java.awt.Button();
-        btnClear = new java.awt.Button();
         txtRecipeName = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -30,20 +28,8 @@ public class CreateRecipeDisplay extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         txtIngredients = new javax.swing.JTextArea();
         lblSave = new javax.swing.JLabel();
-
-        btnSave.setLabel("Save");
-        btnSave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSaveActionPerformed(evt);
-            }
-        });
-
-        btnClear.setLabel("Clear");
-        btnClear.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnClearActionPerformed(evt);
-            }
-        });
+        btnSave = new javax.swing.JButton();
+        btnClear = new javax.swing.JButton();
 
         txtRecipeName.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -71,6 +57,20 @@ public class CreateRecipeDisplay extends javax.swing.JPanel {
         lblSave.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblSave.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
+        btnSave.setText("Save");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+
+        btnClear.setText("Clear");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -90,10 +90,10 @@ public class CreateRecipeDisplay extends javax.swing.JPanel {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                        .addComponent(btnSave)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(btnClear)
+                                        .addGap(0, 0, Short.MAX_VALUE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
@@ -118,10 +118,10 @@ public class CreateRecipeDisplay extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnSave)
+                            .addComponent(btnClear))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblSave, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
@@ -130,6 +130,28 @@ public class CreateRecipeDisplay extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void checkForIngredients(String ingredients) throws IOException{
+        String[] il = new LoadIngredientNames().getIngredientNames();
+        String[] ing = ingredients.split("\n");
+        for(String recIng:ing){
+            boolean found = false;
+            for(String ilIng:il){
+                if(ilIng.equals(recIng)){
+                    found = true;
+                    break;
+                }
+            }
+            if(!found){
+                new CreateIngredient(recIng);
+                IngredientListDisplay.dlm.add(IngredientListDisplay.dlm.size(), recIng);
+            }
+        }
+    }
+    
+    private void txtRecipeNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRecipeNameKeyPressed
+        lblSave.setText("");
+    }//GEN-LAST:event_txtRecipeNameKeyPressed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         LoadRecipeNames lrn = new LoadRecipeNames();
@@ -172,38 +194,16 @@ public class CreateRecipeDisplay extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
-    private void checkForIngredients(String ingredients) throws IOException{
-        String[] il = new LoadIngredientNames().getIngredientNames();
-        String[] ing = ingredients.split("\n");
-        for(String recIng:ing){
-            boolean found = false;
-            for(String ilIng:il){
-                if(ilIng.equals(recIng)){
-                    found = true;
-                    break;
-                }
-            }
-            if(!found){
-                new CreateIngredient(recIng);
-                IngredientListDisplay.dlm.add(IngredientListDisplay.dlm.size(), recIng);
-            }
-        }
-    }
-    
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         txtRecipeName.setText("");
         txtIngredients.setText("");
         txtInstructions.setText("");
     }//GEN-LAST:event_btnClearActionPerformed
 
-    private void txtRecipeNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRecipeNameKeyPressed
-        lblSave.setText("");
-    }//GEN-LAST:event_txtRecipeNameKeyPressed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private java.awt.Button btnClear;
-    private java.awt.Button btnSave;
+    private javax.swing.JButton btnClear;
+    private javax.swing.JButton btnSave;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
